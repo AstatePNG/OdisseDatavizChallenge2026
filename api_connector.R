@@ -19,7 +19,10 @@ get_data_from <- function(api_request) {
 
     resp_body_string(api_res) |> 
       fromJSON(simplifyVector = TRUE, flatten = TRUE) |> 
-      as_tibble()
+      as_tibble() |> 
+      mutate(
+        across(where(is.character), factor)
+      )
   },
   error = function(e) {
     message("Erreur lors de la tentative d'accès à l'URL ", api_request)
