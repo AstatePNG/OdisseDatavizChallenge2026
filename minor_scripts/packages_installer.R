@@ -1,5 +1,10 @@
 packages <- installed.packages()
 
+####
+# Check if a package is installed on the computer
+# input: package_name, the package to check
+# output: true if the package is installed, false otherwise
+####
 is_installed_package <- function(package_name) {
   tryCatch({
     packages[package_name, 1]
