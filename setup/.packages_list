@@ -1,3 +1,6 @@
 tidyverse
 httr2
 jsonlite
+leaflet
+rgdal
+sf
