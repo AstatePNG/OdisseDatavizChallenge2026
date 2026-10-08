@@ -2,7 +2,14 @@ library(tidyverse)
 library(sf)
 library(leaflet)
 
-load_map_sections <- function(path = "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-avec-outre-mer.geojson") {
+sections_list <- read_csv("data/sections_url.csv")
+
+load_map_sections <- function(sections = "departements") {
+    path <- sections_list |> 
+        filter(SECTION == sections) |> 
+        slice_head() |> 
+        pull(URL)
+
     st_read(path, quiet = TRUE) |> 
         st_transform(4326) |> 
         select(code, nom)
