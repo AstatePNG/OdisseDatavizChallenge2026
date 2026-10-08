@@ -5,3 +5,4 @@ leaflet
 rgdal
 sf
 shiny
+shinylive

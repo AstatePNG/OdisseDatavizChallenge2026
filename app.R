@@ -5,12 +5,6 @@ source("minor_scripts/map_creator.R")
 regs <- load_map_sections("regions")
 deps <- load_map_sections("departements")
 
-data_temporary <- edi_2021 |> 
-  mutate(EDI = as.numeric(EDI) / 1000)
-
-data_temporary_full <- city_api_data |> 
-  inner_join(data_temporary, join_by(codeDepartement == departement_code, code == Commune.Code))
-
 get_sections <- function(type) {
   switch(type,
     regs = regs,
@@ -26,60 +20,51 @@ get_code_col <- function(type) {
 }
 
 ui <- fluidPage(
-  titlePanel("Titre principal"),
+  titlePanel("Quels sont les principaux critères sociaux et géographiques influançant l'accès à la santé ?"),
+
+  p("Explorer les données."),
 
   tabsetPanel(
     tabPanel(
-      "1ère carte",
+      "Carte de l'indice de défavorisation sociale médian en 2021",
       sidebarLayout(
         sidebarPanel(
           radioButtons("first_sections_type", "Découper la carte selon les :",
             choices = c("Régions" = "regs", "Départements" = "deps"),
             selected = "deps"),
-          sliderInput("first_slider", "Variable carte 1", min = -100, max = 100, value = c(-100,100))
+          sliderInput("first_slider", "Valeurs d'EDI acceptée :", min = EDI_range[1], max = EDI_range[2], value = EDI_range)
         ),
         mainPanel(
-          textOutput("first_text"),
+          p("Carte de l'indice de défavorisation sociale (EDI) en 2021"),
           leafletOutput("first_map")
         )
       )
     ),
     tabPanel(
-      "2ème carte",
+      "Carte de l'accessibilité potentielle aux médecins généralistes médianne en 2023",
       sidebarLayout(
         sidebarPanel(
           radioButtons("second_sections_type", "Découper la carte selon les :",
             choices = c("Régions" = "regs", "Départements" = "deps"),
             selected = "deps"),
-          sliderInput("second_slider", "Variable carte 2", min = -100, max = 100, value = c(-50,50))
+          sliderInput("second_slider", "Valeurs d'accessibilité potentielle aux médecins généralistes acceptée :", min = APL_range[1], max = APL_range[2], value = c(0,4))
         ),
         mainPanel(
-          textOutput("second_text"),
+          p("Carte de l'accessibilité potentielle localisée aux médecins généraliste (APL MG) en 2023"),
           leafletOutput("second_map")
         )
       )
     ),
     tabPanel(
-      "1er graphique",
+      "Fragilité en fonction de l'âge et du sexe",
       sidebarLayout(
         sidebarPanel(
-          sliderInput("third_slider", "Variable graphique 1", min = 1, max = 100, value = 75)
+          radioButtons("gender_filter", "Sexe :", choices = c("Tout" = "all", unique(as.character(simplified_frailty_prevalence$Sexe)))),
+          checkboxGroupInput("age_filter", "Catégorie d'âge :", choices = unique(as.character(simplified_frailty_prevalence$Âge)), selected = unique(as.character(simplified_frailty_prevalence$Âge)))
         ),
         mainPanel(
-          textOutput("third_text"),
+          p("Distribution de la prévalence de la fragilité en fonction de l'âge et du sexe"),
           plotOutput("first_graph")
-        )
-      )
-    ),
-    tabPanel(
-      "2eme graphique",
-      sidebarLayout(
-        sidebarPanel(
-          sliderInput("fourth_slider", "Variable graphique 2", min = 1, max = 100, value = 50)
-        ),
-        mainPanel(
-          textOutput("fourth_text"),
-          plotOutput("second_graph")
         )
       )
     )
@@ -99,7 +84,7 @@ server <- function(input, output, session) {
   second_type <- reactive({input$second_sections_type})
 
   data_first_map <- reactive({
-    data_temporary_full |> 
+    EDI_data |> 
       mutate(
         code = .data[[get_code_col(input$first_sections_type)]]
       ) |> 
@@ -108,12 +93,12 @@ server <- function(input, output, session) {
       filter(indicateur >= input$first_slider[1] & indicateur <= input$first_slider[2])
   })
   data_second_map <- reactive({
-    data_temporary_full |> 
+    APL_data |> 
       mutate(
         code = .data[[get_code_col(input$second_sections_type)]]
       ) |> 
       group_by(code) |> 
-      summarise(indicateur = median(EDI, na.rm = TRUE)) |>
+      summarise(indicateur = median(apl_mg_hmep, na.rm = TRUE)) |>
       filter(indicateur >= input$second_slider[1] & indicateur <= input$second_slider[2])
   })
 
@@ -125,7 +110,7 @@ server <- function(input, output, session) {
       data = data_first_map(), var = "indicateur", col_code = "code",
       sections = first_sections(),
       map = leafletProxy("first_map"),
-      domain = c(-100, 100),
+      domain = input$first_slider,
       title = "EDI"
     )
   })
@@ -135,14 +120,33 @@ server <- function(input, output, session) {
       data = data_second_map(), var = "indicateur", col_code = "code",
       sections = second_sections(),
       map = leafletProxy("second_map"),
-      domain = c(-100, 100),
-      title = "EDI"
+      domain = input$second_slider,
+      title = "APL MG"
     )
   })
 
-  output$first_graph <- renderPlot({})
-  
-  output$second_graph <- renderPlot({})
+  data_first_graph <- reactive({
+    df <- simplified_frailty_prevalence
+    if(input$gender_filter != "all") {
+      df <- df |> 
+        filter(Sexe == input$gender_filter)
+    }
+    df |> 
+      filter(Âge %in% input$age_filter)
+  })
+
+  output$first_graph <- renderPlot({
+    data_first_graph() |> 
+      ggplot(aes(x=Prévalence,y=Sexe))+
+      geom_boxplot(aes(fill=Sexe),alpha = 0.5)+
+      geom_jitter(aes(col=Âge))+
+      labs(
+        caption="Santé Publique France",
+        x = "Prévalence de la fagilité"
+      )+
+      theme_bw() +
+      coord_flip()
+  })
 }
 
 shinyApp(ui = ui, server = server)
