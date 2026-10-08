@@ -21,3 +21,26 @@ edi_2021 <- read.table("data/f_edi_2021_par_commune.csv", sep = ",", header = TR
 
 apl_2023 <- read.table("data/Accessibilite_potentielle_localisee_mg_2023.txt",
                     sep = "\t", dec = ",", header = TRUE, stringsAsFactors = TRUE)
+
+simplified_frailty_prevalence <- frailty_prevalence |> 
+  group_by(Année,Sexe,Âge) |> 
+  filter(Âge!="55 ans et plus") |> 
+  filter(Sexe!="Hommes et Femmes") |> 
+  droplevels()
+
+EDI_data <- edi_2021 |> 
+  mutate(EDI = as.numeric(EDI))
+
+EDI_data <- city_api_data |> 
+  inner_join(data_temporary, join_by(codeDepartement == departement_code, code == Commune.Code))
+
+EDI_range <- range(EDI_data$EDI, na.rm = TRUE)
+
+APL_data <- apl_2023 |> 
+  mutate(apl_mg_hmep = as.numeric(apl_mg_hmep)) |> 
+  select(-an)
+
+APL_data <- city_api_data |> 
+  inner_join(APL_data, join_by(code == codgeo))
+
+APL_range <- range(APL_data$apl_mg_hmep, na.rm = TRUE)
