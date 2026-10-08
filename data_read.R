@@ -1,10 +1,3 @@
-###### Odisse Dataviz Challenge #####
-### Fichier d'integration des donnees ###
-# Date : 08/10/26
-# Auteur : Aurelien R
-#####
-
-# Chargement des jeux de donnees
 mortalite_catsociopro = read.table("CS_detaillee.csv",sep=";",dec=",",
                                     header=TRUE,stringsAsFactors = TRUE,
                                     fileEncoding = "Latin1")
