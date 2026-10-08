@@ -15,11 +15,6 @@ load_map_sections <- function(sections = "departements") {
         select(code, nom)
 }
 
-normalize_code <- function(x) {
-    x <- trimws(as.character(x))
-    ifelse(nchar(x) == 1, paste0("0", x), x)
-}
-
 base_map <- function(sections, lng = 2.5, lat = 46.5, zoom = 5) {
     leaflet(sections, options = leafletOptions(minZoom = 3)) |>
         addTiles() |>
@@ -33,7 +28,7 @@ sectionned_map <- function(data, var, col_code = "code", sections,
     stopifnot(col_code %in% names(data), var %in% names(data))
 
     map_data <- data |> 
-        transmute(code = normalize_code(.data[[col_code]]), value = .data[[var]]) |> 
+        transmute(code = as.character(.data[[col_code]]), value = .data[[var]]) |> 
         right_join(sections, join_by(code)) |> 
         st_as_sf()
 
@@ -50,6 +45,7 @@ sectionned_map <- function(data, var, col_code = "code", sections,
 
     map |> 
         clearShapes() |> 
+        clearControls() |> 
         addPolygons(
             data = map_data,
             fillColor = ~pal(value), fillOpacity = 0.85,
