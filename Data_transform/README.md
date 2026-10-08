@@ -3,11 +3,11 @@
 - données_propres.xlsx : the file used to transform xlsx files into usable csv files.
 
 ## To visualize a transformation script :
-- open données_propres.xlsx
-- go to the Data tab
-- click on Get Data > Launch Power Query Editor
-- select a Request
-- Advanced Editor
+- Open données_propres.xlsx
+- Go to the Data tab
+- Click on Get Data > Launch Power Query Editor
+- Select a Request
+- Click on Advanced Editor
 
 ### /!\ Source Files might be broken in transformation scripts as Power Query **DOES NOT** allow relative path /!\
 
