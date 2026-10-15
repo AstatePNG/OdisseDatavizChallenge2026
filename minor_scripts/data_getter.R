@@ -22,6 +22,8 @@ edi_2021 <- read.table("data/f_edi_2021_par_commune.csv", sep = ",", header = TR
 apl_2023 <- read.table("data/Accessibilite_potentielle_localisee_mg_2023.txt",
                     sep = "\t", dec = ",", header = TRUE, stringsAsFactors = TRUE)
 
+PAPH <- read.table("data/PAPH.csv", sep = ";", header = TRUE, stringsAsFactors = TRUE)
+
 simplified_frailty_prevalence <- frailty_prevalence |> 
   group_by(Année,Sexe,Âge) |> 
   filter(Âge!="55 ans et plus") |> 
