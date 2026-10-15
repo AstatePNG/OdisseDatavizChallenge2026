@@ -32,7 +32,7 @@ EDI_data <- edi_2021 |>
   mutate(EDI = as.numeric(EDI))
 
 EDI_data <- city_api_data |> 
-  inner_join(data_temporary, join_by(codeDepartement == departement_code, code == Commune.Code))
+  inner_join(EDI_data, join_by(codeDepartement == departement_code, code == Commune.Code))
 
 EDI_range <- range(EDI_data$EDI, na.rm = TRUE)
 
