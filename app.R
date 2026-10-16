@@ -53,7 +53,7 @@ ui <- fluidPage(
             strong("EDI"), 
             "ici), pour", 
             strong("french-European Deprivation Index"), 
-            "— ou Facteur de Défovarisation sociale Européen adapté à la France — est",
+            "— ou Facteur de Défavorisation sociale Européen adapté à la France — est",
             "un indicateur permettant d'évaluer le niveau de défavorisation d'une commune.",
             "Un EDI plus élevé indique une commune plus défavorisée."
           ),
@@ -71,14 +71,11 @@ ui <- fluidPage(
             strong("Paris.")
           ),
           p(
-            "En dehors de l'ïle-de-France, on voit que les", 
-            strong(tags$i("écarts-type")),
-            "sont particulièrement importants dans le",
+            "En dehors de l'ïle-de-France, on voit que l'", 
+            strong(tags$i("écart-type")),
+            "est particulièrement importants dans le",
             strong("Nord,"),
-            "la",
-            strong("Meuse"),
-            "et la",
-            strong("Loire.")
+            "ce qui révèle une grande disparité sur le niveau de défavorisation entre les différentes communes de ce département."
           ),
           p(
             "Plus généralement, on jouant sur les différents facteurs d'observation",
@@ -249,13 +246,13 @@ server <- function(input, output, session) {
     
     if(input$first_display_type == "median") {
       df <- df |> 
-        summarise(indicateur = median(EDI, na.rm = TRUE))
+        summarise(EDI = median(EDI, na.rm = TRUE))
     } else {
       df <- df |> 
-        summarise(indicateur = sd(EDI, na.rm = TRUE))
+        summarise(EDI = sd(EDI, na.rm = TRUE))
     }
     df |> 
-      filter(!is.na(indicateur))
+      filter(!is.na(EDI))
   })
   data_second_map <- reactive({
     df <- APL_data |> 
@@ -267,13 +264,13 @@ server <- function(input, output, session) {
     
     if(input$second_display_type == "median") {
       df <- df |> 
-        summarise(indicateur = median(apl_mg_hmep, na.rm = TRUE))
+        summarise(APL_MG = median(apl_mg_hmep, na.rm = TRUE))
     } else {
       df <- df |> 
-        summarise(indicateur = sd(apl_mg_hmep, na.rm = TRUE))
+        summarise(APL_MG = sd(apl_mg_hmep, na.rm = TRUE))
     }
       df |> 
-        filter(!is.na(indicateur))
+        filter(!is.na(APL_MG))
   })
   data_third_map <- reactive({
     df <- PAPH_data |> 
@@ -285,13 +282,13 @@ server <- function(input, output, session) {
     
     if(input$third_display_type == "median") {
       df <- df |> 
-        summarise(indicateur = median(Total.des.aides.sociales.aux.personnes.handicapées..depuis.2000, na.rm = TRUE))
+        summarise(ASPH = median(Total.des.aides.sociales.aux.personnes.handicapées..depuis.2000, na.rm = TRUE))
     } else {
       df <- df |> 
-        summarise(indicateur = sd(Total.des.aides.sociales.aux.personnes.handicapées..depuis.2000, na.rm = TRUE))
+        summarise(ASPH = sd(Total.des.aides.sociales.aux.personnes.handicapées..depuis.2000, na.rm = TRUE))
     }
       df |> 
-        filter(!is.na(indicateur))
+        filter(!is.na(ASPH))
   })
   data_fourth_map <- reactive({
     df <- PAPH_data |> 
@@ -303,13 +300,13 @@ server <- function(input, output, session) {
     
     if(input$fourth_display_type == "median") {
       df <- df |> 
-        summarise(indicateur = median(Aides.sociales.aux.personnes.âgées.depuis.2000..en.décembre, na.rm = TRUE))
+        summarise(ASPA = median(Aides.sociales.aux.personnes.âgées.depuis.2000..en.décembre, na.rm = TRUE))
     } else {
       df <- df |> 
-        summarise(indicateur = sd(Aides.sociales.aux.personnes.âgées.depuis.2000..en.décembre, na.rm = TRUE))
+        summarise(ASPA = sd(Aides.sociales.aux.personnes.âgées.depuis.2000..en.décembre, na.rm = TRUE))
     }
       df |> 
-        filter(!is.na(indicateur))
+        filter(!is.na(ASPA))
   })
 
   output$first_map  <- renderLeaflet(base_map(first_sections()))
@@ -323,10 +320,10 @@ server <- function(input, output, session) {
     req(df, nrow(df) > 0)
 
     sectionned_map(
-      data = df, var = "indicateur", col_code = "code",
+      data = df, var = "EDI", col_code = "code",
       sections = first_sections(),
       map = leafletProxy("first_map"),
-      domain = range(df$indicateur),
+      domain = range(df$EDI),
       title = "EDI",
       reverse = TRUE
     )
@@ -338,10 +335,10 @@ server <- function(input, output, session) {
     req(df, nrow(df) > 0)
 
     sectionned_map(
-      data = df, var = "indicateur", col_code = "code",
+      data = df, var = "APL_MG", col_code = "code",
       sections = second_sections(),
       map = leafletProxy("second_map"),
-      domain = range(df$indicateur),
+      domain = range(df$APL_MG),
       title = "APL MG"
     )
   })
@@ -352,11 +349,11 @@ server <- function(input, output, session) {
     req(df, nrow(df) > 0)
 
     sectionned_map(
-      data = df, var = "indicateur", col_code = "code",
+      data = df, var = "ASPH", col_code = "code",
       sections = third_sections(),
       map = leafletProxy("third_map"),
-      domain = range(df$indicateur),
-      title = "Indicateur"
+      domain = range(df$ASPH),
+      title = "ASPH"
     )
   })
 
@@ -366,11 +363,11 @@ server <- function(input, output, session) {
     req(df, nrow(df) > 0)
 
     sectionned_map(
-      data = df, var = "indicateur", col_code = "code",
+      data = df, var = "ASPA", col_code = "code",
       sections = fourth_sections(),
       map = leafletProxy("fourth_map"),
-      domain = range(df$indicateur),
-      title = "Indicateur"
+      domain = range(df$ASPA),
+      title = "ASPA"
     )
   })
 
