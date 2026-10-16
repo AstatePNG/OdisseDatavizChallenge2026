@@ -5,10 +5,10 @@ The subject is inequalities in access to healthcare in France.
 
 ## Access the Dataviz
 ### Website deployment
-Go to the [dataviz website]()
+Go to the [dataviz website](https://xkyfmp-astate0png.shinyapps.io/odissedatavizchallenge2026/)
 
 ### Run Locally
-Download the [latest release](https://github.com/AstatePNG/OdisseDatavizChallenge2026/releases/tag/1.2)
+Download the [latest release](https://github.com/AstatePNG/OdisseDatavizChallenge2026/releases/tag/1.3)
 
 Unzip the folder
 
@@ -19,6 +19,10 @@ Run the shiny app (app.R)
 Our raw dataset were made to be easily readable for non informaticians, making them unreadable with R.
 Due to that, we had to cleanse our data through Excel Power Query, which took a substantiate amount of time.
 Understanding how to do interactive map graphs also took us time.
+
+## Known issue
+
+The first time a map graph is displayed, the sections aren't loaded. Changing the filters resolve the issue. 
 
 ## Authors
 - @[AstatePNG](https://github.com/AstatePNG)
