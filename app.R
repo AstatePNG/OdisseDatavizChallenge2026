@@ -1,3 +1,4 @@
+source("minor_scripts/packages_installer.R")
 library(shiny)
 source("minor_scripts/data_getter.R")
 source("minor_scripts/map_creator.R")
