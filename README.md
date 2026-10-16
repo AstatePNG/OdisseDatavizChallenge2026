@@ -5,7 +5,7 @@ The subject is inequalities in access to healthcare in France.
 
 ## Access the Dataviz
 ### Website deployment
-Go to the [dataviz website]()
+Go to the [dataviz website](https://xkyfmp-astate0png.shinyapps.io/odissedatavizchallenge2026/)
 
 ### Run Locally
 Download the [latest release](https://github.com/AstatePNG/OdisseDatavizChallenge2026/releases/tag/1.1)
