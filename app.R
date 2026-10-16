@@ -61,16 +61,29 @@ ui <- fluidPage(
           br(),
 
           p(
-            "En observant les valeurs médianes les plus importantes, on peut voir que les départements",
-            "les plus défavorisés sont la Seine-Saint-Denis — dont la valeur médiane est",
-            "largement supérieure aux autres départements —, le Val-de-Marne et Paris.",
-            "En dehors de l'ïle-de-France, on voit que les écarts-type sont particulièrement importants",
-            "dans le Nord, la Meuse et la Loire."
+            "En observant les", 
+            strong(tags$i("valeurs médianes les plus importantes par départements,")), 
+            "on peut voir que les départements les plus défavorisés sont la", 
+            strong("Seine Saint Denis"), 
+            "— dont la valeur médiane est largement supérieure aux autres départements —, le",
+            strong("Val de Marne"),
+            "et", 
+            strong("Paris.")
+          ),
+          p(
+            "En dehors de l'ïle-de-France, on voit que les", 
+            strong(tags$i("écarts-type")),
+            "sont particulièrement importants dans le",
+            strong("Nord,"),
+            "la",
+            strong("Meuse"),
+            "et la",
+            strong("Loire.")
           ),
           p(
             "Plus généralement, on jouant sur les différents facteurs d'observation",
-            "on constate qu'en dehors du Nord Ouest du Pays (Bretagne, Normandie & Pays de la Loire),",
-            "l'EDI est particulièrement variable et/ou élevé."
+            "on constate qu'en dehors des régions du Nord Ouest du Pays (Bretagne, Normandie & Pays de la Loire),",
+            "l'EDI est particulièrement variable et/ou élevé en France."
           )
         ),
         mainPanel(
@@ -95,7 +108,32 @@ ui <- fluidPage(
           
           h3("Analyses :"),
 
-          p("blablabla")
+          p(
+            "L'",
+            strong("accessibilité potentielle localisée aux médecins généralistes"),
+            "(raccourcie en", 
+            strong("accessibilité potentielle aux médecins généralistes"), 
+            "ici), abbregée en", 
+            strong("APL MG"), 
+            "est un indicateur permettant d'évaluer le niveau d'adéquation entre",
+            "l'offre de médecins généraliste et la demande de patients.",
+            "Une valeur d'APL MG plus élevée indique une meilleure offre en médecins généralistes."
+          ),
+          
+          br(),
+
+          p(
+            "En observant les valeurs médianes les plus faibles par départements, on peut voir que les départements",
+            "ayant le plus de difficultés a accédé à des médecins généralistes sont la Haute Corse — dont la valeur médiane est",
+            "largement inférieure aux autres départements —, et la Corse du Sud.",
+            "En dehors de l'ïle-de-France, on voit que les écarts-type sont particulièrement importants",
+            "dans le Nord, la Meuse et la Loire."
+          ),
+          p(
+            "Plus généralement, on jouant sur les différents facteurs d'observation",
+            "on constate qu'en dehors du Nord Ouest du Pays (Bretagne, Normandie & Pays de la Loire),",
+            "l'EDI est particulièrement variable et/ou élevé."
+          )
         ),
         mainPanel(
           leafletOutput("second_map", height = "80vh")
@@ -289,7 +327,8 @@ server <- function(input, output, session) {
       sections = first_sections(),
       map = leafletProxy("first_map"),
       domain = range(df$indicateur),
-      title = "EDI"
+      title = "EDI",
+      reverse = TRUE
     )
   })
 
