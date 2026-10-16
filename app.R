@@ -78,13 +78,18 @@ ui <- fluidPage(
             "ce qui révèle une grande disparité sur le niveau de défavorisation entre les différentes communes de ce département."
           ),
           p(
-            "Plus généralement, on jouant sur les différents facteurs d'observation",
+            "Plus généralement, en jouant sur les différents facteurs d'observation",
             "on constate qu'en dehors des régions du Nord Ouest du Pays (Bretagne, Normandie & Pays de la Loire),",
             "l'EDI est particulièrement variable et/ou élevé en France."
           )
         ),
         mainPanel(
-          leafletOutput("first_map", height = "80vh")
+          leafletOutput("first_map", height = "80vh"),
+          a(
+            "Odissé (Santé Publique France) - F-EDI",
+            target = "_blank",
+            href = "https://odisse.santepubliquefrance.fr/explore/assets/french-european-deprivation-index-f-edi-2021-par-commune/"
+          )
         )
       )
     ),
@@ -120,20 +125,26 @@ ui <- fluidPage(
           br(),
 
           p(
-            "En observant les valeurs médianes les plus faibles par départements, on peut voir que les départements",
+            "En observant les", 
+            strong(tags$i("valeurs médianes les plus faibles")),
+            "par départements, on peut voir que les départements",
             "ayant le plus de difficultés a accédé à des médecins généralistes sont la Haute Corse — dont la valeur médiane est",
-            "largement inférieure aux autres départements —, et la Corse du Sud.",
-            "En dehors de l'ïle-de-France, on voit que les écarts-type sont particulièrement importants",
-            "dans le Nord, la Meuse et la Loire."
+            "largement inférieure aux autres départements —, et la Corse du Sud."
           ),
           p(
-            "Plus généralement, on jouant sur les différents facteurs d'observation",
-            "on constate qu'en dehors du Nord Ouest du Pays (Bretagne, Normandie & Pays de la Loire),",
-            "l'EDI est particulièrement variable et/ou élevé."
+            "On voit que l'",
+            strong(tags$i("écart-type")),
+            "est particulièrement important dans les",
+            strong("Hautes Alpes.")
           )
         ),
         mainPanel(
-          leafletOutput("second_map", height = "80vh")
+          leafletOutput("second_map", height = "80vh"),
+          a(
+            "Observatoire des territoires - Accessibilité potentielle localisée aux médecins généralistes",
+            target = "_blank",
+            href = "https://www.observatoire-des-territoires.gouv.fr/accessibilite-potentielle-localisee-apl-aux-medecins-generalistes"
+          )
         )
       )
     ),
@@ -153,10 +164,33 @@ ui <- fluidPage(
           
           h3("Analyses :"),
 
-          p("blablabla")
+          p(
+            "L'",
+            strong("aide sociale aux personnes en situation de handicap"), 
+            "abbregée en", 
+            strong("ASPH"), 
+            "comptabilise le nombre d'individus ayant demandé l'aide départementale."
+          ),
+          
+          br(),
+
+          p(
+            "La région Île-de-France a la plus haute valeur médiane de personnes en",
+            "situation de handicap touchant des aides sociales entre 2000 et 2024.",
+            "L'Occitanie et la Bourgogne-Franche-Comté ont la médiane la plus faible."
+          ),
+          p(
+            "Les Hauts-de-France ont l'écart-type le plus élevé entre 2000 et 2024.",
+            "La Corse a l'écart-type le plus faible."
+          )
         ),
         mainPanel(
-          leafletOutput("third_map", height = "80vh")
+          leafletOutput("third_map", height = "80vh"),
+          a(
+            "DREES - Les bénéficiaires de l'aide sociale départementale",
+            target = "_blank",
+            href = "https://drees2-sgsocialgouv.opendatasoft.com/explore/dataset/les-beneficiaires-de-l-aide-sociale-departementale-aux-personnes-agees-ou-handic/information/"
+          )
         )
       )
     ),
@@ -176,10 +210,34 @@ ui <- fluidPage(
           
           h3("Analyses :"),
 
-          p("blablabla")
+          p(
+            "L'",
+            strong("aide sociale aux personnes âgées"), 
+            "abbregée en", 
+            strong("ASPA"), 
+            "comptabilise le nombre d'individus ayant demandé l'aide départementale."
+          ),
+          
+          br(),
+
+          p(
+            "On peut observer que de 2000 à 2024, la Bretagne a la plus haute valeur",
+            "médiane de personnes âgées touchant des aides sociales, suivie par", 
+            "l'Île-de-France.",
+            "La Bourgogne-Franche-Comté et le Centre-Val de Loire ont la valeur médiane la plus faible."
+          ),
+          p(
+            "Les Hauts-de-France ont l'écart-type le plus élevé entre 2000 et 2024.",
+            "La Corse a l'écart-type le plus faible."
+          )
         ),
         mainPanel(
-          leafletOutput("fourth_map", height = "80vh")
+          leafletOutput("fourth_map", height = "80vh"),
+          a(
+            "DREES - Les bénéficiaires de l'aide sociale départementale",
+            target = "_blank",
+            href = "https://drees2-sgsocialgouv.opendatasoft.com/explore/dataset/les-beneficiaires-de-l-aide-sociale-departementale-aux-personnes-agees-ou-handic/information/"
+          )
         )
       )
     ),
@@ -196,10 +254,23 @@ ui <- fluidPage(
           
           h3("Analyses :"),
 
-          p("blablabla")
+          p(
+            "La prévalence du syndrome de fragilité augmente avec l'âge.",
+            "On peut aussi voir que les femmes, à tous âges, ont plus de prévalence",
+            "du syndrome de fragilité que les hommes."
+          ),
+          p(
+            "Pour une même catégorie d'âge, plus l'âge est important,",
+            "plus l'écart entre les hommes et les femmes se creuse."
+          )
         ),
         mainPanel(
-          plotOutput("first_graph", height = "80vh")
+          plotOutput("first_graph", height = "80vh"),
+          a(
+            "Odissée (Santé Publique France) - Fragilité : Prévalence",
+            target = "_blank",
+            href = "https://odisse.santepubliquefrance.fr/explore/assets/fragilite-prevalence-france/export/"
+          )
         )
       )
     ),
@@ -215,10 +286,30 @@ ui <- fluidPage(
           
           h3("Analyses :"),
 
-          p("blablabla")
+          p(
+            "On peut voir que, peu importe l'âge choisi, les diplômés supérieur au",
+            "baccalauréat ont la plus longue espérance de vie, tandis que les sans diplôme ont",
+            "la plus faible."
+          ),
+
+          p(
+            "De plus, on observe que pour les sans diplôme, il y a une plus",
+            "forte concentration des effectifs vers une faible espérance de vie",
+            "que pour les diplômés."
+          ),
+
+          p(
+            "De manière générale, l'espérance de vie semble positivement liée aux",
+            "niveaux des diplômes."
+          )
         ),
         mainPanel(
-          plotOutput("second_graph", height = "80vh")
+          plotOutput("second_graph", height = "80vh"),
+          a(
+            "INSEE - mortalité par catégorie sociale et par diplôme jusqu’en 2020-2022",
+            target = "_blank",
+            href = "https://www.insee.fr/fr/statistiques/8208816?sommaire=8208818"
+          )
         )
       )
     )
@@ -339,7 +430,8 @@ server <- function(input, output, session) {
       sections = second_sections(),
       map = leafletProxy("second_map"),
       domain = range(df$APL_MG),
-      title = "APL MG"
+      title = "APL MG",
+      reverse = (input$second_display_type == "sd")
     )
   })
 
@@ -353,7 +445,8 @@ server <- function(input, output, session) {
       sections = third_sections(),
       map = leafletProxy("third_map"),
       domain = range(df$ASPH),
-      title = "ASPH"
+      title = "ASPH",
+      reverse = (input$third_display_type == "sd")
     )
   })
 
@@ -367,7 +460,8 @@ server <- function(input, output, session) {
       sections = fourth_sections(),
       map = leafletProxy("fourth_map"),
       domain = range(df$ASPA),
-      title = "ASPA"
+      title = "ASPA",
+      reverse = (input$fourth_display_type == "sd")
     )
   })
 
@@ -393,7 +487,6 @@ server <- function(input, output, session) {
       geom_boxplot(aes(fill=Sexe),alpha = 0.5)+
       geom_jitter(aes(col=Âge))+
       labs(
-        caption="Santé Publique France",
         x = "Prévalence de la fagilité"
       )+
       theme_bw() +
@@ -406,7 +499,6 @@ server <- function(input, output, session) {
       geom_violin(aes(fill=Diplôme), alpha = 0.3, col = "transparent")+
       geom_boxplot(aes(col=Diplôme), alpha = 0.5, fill = "white", width = 0.3)+
       labs(
-        caption="INSEE - mortalité par catégorie sociale et par diplôme jusqu’en 2020-2022",
         y = "Espérance de vie"
       )+
       scale_color_brewer(palette = "Set2") +
