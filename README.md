@@ -22,7 +22,7 @@ Understanding how to do interactive map graphs also took us time.
 
 ## Known issue
 
-The first time a map graph is displayed, the sections aren't loaded. Changing the filters resolve the issue. 
+The first time a map graph is displayed, the sections aren't loaded. Changing the filters or switching tab resolve the issue. 
 
 ## Authors
 - @[AstatePNG](https://github.com/AstatePNG)
