@@ -22,9 +22,9 @@ base_map <- function(sections, lng = 2.5, lat = 46.5, zoom = 5) {
 }
 
 sectionned_map <- function(data, var, col_code = "code", sections,
-                            map = NULL, palette = "viridis",
+                            map = NULL, palette = "mako",
                             domain = NULL, title = var,
-                            units = "", dec = 1) {
+                            units = "", dec = 1, reverse = FALSE) {
     stopifnot(col_code %in% names(data), var %in% names(data))
 
     map_data <- data |> 
@@ -33,7 +33,7 @@ sectionned_map <- function(data, var, col_code = "code", sections,
         st_as_sf()
 
     if (is.null(domain)) domain <- range(map_data$value, na.rm = TRUE)
-    pal <- colorNumeric(palette, domain = domain, na.color = "#cccccc")
+    pal <- colorNumeric(palette, domain = domain, na.color = "#cccccc", reverse = reverse)
 
     labels <- ifelse(
         is.na(map_data$value),

@@ -6,3 +6,4 @@ rgdal
 sf
 shiny
 shinylive
+data.table
